@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" class="space-y-6">
+    <input type="hidden" name="email" value="{{ user.email }}">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Nombre Completo</label>
+            <input id="name" name="name" type="text" value="{{ user.name }}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div>
+            <label for="age" class="block text-sm font-medium text-gray-700">Edad (Solo números)</label>
+            <input id="age" name="age" type="number" value="{{ user.age }}" required min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono (Solo números)</label>
+            <input id="phone" name="phone" type="number" value="{{ user.phone }}" required min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div>
+            <label for="city" class="block text-sm font-medium text-gray-700">Procedencia</label>
+            <select id="city" name="city" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in procedencia %}
+                    <option value="{{ option }}" {% if option == user.city %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="needs_lodging" class="block text-sm font-medium text-gray-700">¿Necesitas Hospedaje?</label>
+            <select id="needs_lodging" name="needs_lodging" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in hospedaje %}
+                    <option value="{{ option }}" {% if option == user.needs_lodging %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="transport" class="block text-sm font-medium text-gray-700">¿Cómo planeas llegar?</label>
+            <select id="transport" name="transport" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in transporte %}
+                    <option value="{{ option }}" {% if option == user.transport %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="local_name" class="block text-sm font-medium text-gray-700">Lugar Donde Te Reunes</label>
+            <input id="local_name" name="local_name" type="text" value="{{ user.local_name }}" required placeholder="Iglesia de Cristo en Santa Mónica" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div>
+            <label for="membership" class="block text-sm font-medium text-gray-700">¿Miembro o Visitante?</label>
+            <select id="membership" name="membership" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in membresia %}
+                    <option value="{{ option }}" {% if option == user.membership %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="situation" class="block text-sm font-medium text-gray-700">Situación</label>
+            <select id="situation" name="situation" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in situacion %}
+                    <option value="{{ option }}" {% if option == user.situation %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="flex justify-end space-x-4 pt-4 border-t">
+        <a href="{{ url_for('profile') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition duration-150">
+            Cancelar
+        </a>
+        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+            Guardar Cambios
+        </button>
+    </div>
+</form>
+{% endblock %}

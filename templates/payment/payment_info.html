@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="space-y-8">
+    <h2 class="text-3xl font-bold text-gray-800 border-b pb-4">Realizar Transferencia</h2>
+    
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg shadow-sm">
+        <p class="font-semibold text-blue-800"><span class="text-2xl font-extrabold">${{ monto }} MXN</span></p>
+        <p class="text-blue-700 mt-1">Concepto de Referencia: <span class="font-mono text-base bg-blue-100 p-1 rounded">Usa Tu Nombre</span></p>
+        <p class="text-sm text-blue-600 mt-2">Puedes elegir cualquiera de las dos cuentas para realizar la transferencia.</p>
+    </div>
+
+    <!-- Contenedor de Cuentas Bancarias -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {% for account in bank_accounts %}
+        <div class="flex flex-col rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.01] transition duration-300">
+            <!-- Encabezado de la Tarjeta -->
+            <div class="relative p-6 text-white {{ account.style_class }} shadow-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-xl font-bold mt-2">{{ account.bank_name }}</h3>
+                    </div>
+                    <!-- Icono de Tarjeta -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                </div>
+            </div>
+
+            <!-- Detalles y Botones de Copia -->
+            <div class="p-6 bg-white space-y-4">
+                
+                <!-- Titular -->
+                <div class="py-2 border-b border-gray-100">
+                    <span class="text-xs font-semibold uppercase text-gray-500">Titular de la Cuenta</span>
+                    <p class="font-semibold text-lg text-gray-900 mt-1">{{ account.owner }}</p>
+                </div>
+
+                <!-- CLABE -->
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-semibold uppercase text-gray-500">CLABE Interbancaria</span>
+                        <span id="clabe-{{ loop.index }}" class="font-mono text-gray-800 text-lg break-all">{{ account.clabe }}</span>
+                    </div>
+                    <button 
+                        onclick="copyText('clabe-{{ loop.index }}', this)" 
+                        data-original-text="Copiar"
+                        class="p-2 rounded-full transition duration-150 ease-in-out {{ account.style_class }} text-white hover:opacity-90 active:scale-95 flex items-center justify-center shadow-md ml-4"
+                        title="Copiar CLABE"
+                    >
+                        <!-- Icono de Copiar -->
+                        <svg id="icon-clabe-{{ loop.index }}" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    </button>
+                </div>
+
+                <!-- Número de Tarjeta -->
+                <div class="flex justify-between items-center py-2">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-semibold uppercase text-gray-500">No. Tarjeta (Para Pago)</span>
+                        <span id="card-{{ loop.index }}" class="font-mono text-gray-800 text-lg break-all">{{ account.card_number }}</span>
+                    </div>
+                    <button 
+                        onclick="copyText('card-{{ loop.index }}', this)" 
+                        data-original-text="Copiar"
+                        class="p-2 rounded-full transition duration-150 ease-in-out {{ account.style_class }} text-white hover:opacity-90 active:scale-95 flex items-center justify-center shadow-md ml-4"
+                        title="Copiar Tarjeta"
+                    >
+                        <!-- Icono de Copiar -->
+                        <svg id="icon-card-{{ loop.index }}" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Botón para registrar la transferencia -->
+    <div class="text-center pt-8 border-t mt-8">
+        <a href="{{ url_for('submit_payment') }}" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-bold rounded-md shadow-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition duration-150">
+            Ya Realicé la Transferencia, Registrar Comprobante
+        </a>
+    </div>
+</div>
+
+<!-- Scripts de JavaScript para la funcionalidad de Copiado -->
+<script>
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 z-50 flex items-center p-4 rounded-lg bg-gray-800 text-white shadow-xl transition-opacity duration-300';
+        toast.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>${message}</span>`;
+        
+        document.body.appendChild(toast);
+        
+        // Desaparecer después de 2.5 segundos
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+
+    function copyText(elementId, buttonElement) {
+        const textElement = document.getElementById(elementId);
+        const textToCopy = textElement.textContent || textElement.innerText;
+        
+        // Usamos document.execCommand('copy') por la restricción de iframes
+        const textarea = document.createElement("textarea");
+        textarea.value = textToCopy;
+        textarea.style.position = "fixed";
+        textarea.style.clip = "rect(0, 0, 0, 0)";
+        document.body.appendChild(textarea);
+        textarea.select();
+        
+        try {
+            document.execCommand('copy');
+            showToast('¡Copiado al portapapeles!');
+            
+            // Animación del botón: cambiar a ícono de check
+            const originalIcon = buttonElement.querySelector('svg');
+            const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+            
+            if (originalIcon) {
+                const originalHTML = originalIcon.outerHTML;
+                buttonElement.innerHTML = checkIcon;
+                
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalHTML;
+                }, 1500); // Vuelve al ícono de copiar después de 1.5s
+            }
+
+        } catch (err) {
+            console.error('Error al intentar copiar:', err);
+            // Fallback: usar el prompt si falla
+            window.prompt("Presiona Ctrl+C o Cmd+C para copiar:", textToCopy);
+        } finally {
+            document.body.removeChild(textarea);
+        }
+    }
+</script>
+{% endblock %}

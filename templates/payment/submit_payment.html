@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-xl mx-auto">
+    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-8 rounded-lg shadow-sm">
+        <!-- <p class="font-semibold text-yellow-800">Costo: <span class="text-xl font-bold">${{ monto }} MXN</span></p> -->
+        <p class="text-yellow-700 mt-1">Asegúrate de que los datos de tu transferencia coincidan con el comprobante.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('submit_payment') }}" class="space-y-6">
+
+        <!-- Monto -->
+        <div>
+            <label for="monto" class="block text-sm font-medium text-gray-700">Monto</label>
+            <input type="number" id="monto" name="monto" required
+                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                   placeholder="200.00">
+            <p class="mt-1 text-xs text-gray-500">El monto de tu transferencia en tu comprobante.</p>
+        </div>
+
+        <!-- Campo de Referencia -->
+        <div>
+            <label for="reference" class="block text-sm font-medium text-gray-700">Número de Referencia / Folio de Operación</label>
+            <input type="text" id="reference" name="reference" required
+                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                   placeholder="9876543210">
+            <p class="mt-1 text-xs text-gray-500">El número que identifica tu transferencia en tu comprobante.</p>
+        </div>
+
+        <!-- Campo de Concepto -->
+        <div>
+            <label for="concept" class="block text-sm font-medium text-gray-700">Concepto Utilizado</label>
+            <input type="text" id="concept" name="concept" required
+                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                   placeholder="Ejemplo: Tu Nombre">
+            <p class="mt-1 text-xs text-gray-500">Debe coincidir con el concepto que usaste en la transferencia.</p>
+        </div>
+
+        <!-- Banco Emisor (Tu Banco) -->
+        <div>
+            <label for="bank_issuer" class="block text-sm font-medium text-gray-700">Banco Emisor (Tu Banco)</label>
+            <input type="text" id="bank_issuer" name="bank_issuer" required
+                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                   placeholder="Ejemplo: HSBC, Nu, etc.">
+            <p class="mt-1 text-xs text-gray-500">Nombre del banco desde donde hiciste la transferencia.</p>
+        </div>
+
+        <!-- Fecha de Transacción -->
+        <div>
+            <label for="transaction_date" class="block text-sm font-medium text-gray-700">Fecha y Hora de la Transacción</label>
+            <input type="datetime-local" id="transaction_date" name="transaction_date" required
+                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <p class="mt-1 text-xs text-gray-500">La fecha y hora exactas de la transferencia.</p>
+        </div>
+
+        <!-- Banco Receptor (Opciones disponibles) -->
+        <div>
+            <label for="bank_receiver" class="block text-sm font-medium text-gray-700">Banco Receptor (Opciones disponibles)</label>
+            <select id="bank_receiver" name="bank_receiver" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                {% for option in bank_accounts %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+            <p class="mt-1 text-xs text-gray-500">Nombre del banco que sleccionaste para la transferencia.</p>
+        </div>
+
+        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+            Confirmar Registro de Pago
+        </button>
+    </form>
+
+    <div class="mt-6 text-center">
+        <a href="{{ url_for('payment_info') }}" class="text-sm font-medium text-gray-500 hover:text-gray-900">
+            &larr; Volver a ver las cuentas bancarias
+        </a>
+    </div>
+</div>
+{% endblock %}

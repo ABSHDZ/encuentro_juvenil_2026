@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupos & Registro - {{ title }}</title>
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <header class="bg-indigo-600 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+
+                <nav class="flex items-center space-x-4">
+                    <a href="{{ url_for('index') }}" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition duration-150">Inicio</a>
+                    <a href="{{ url_for('panfleto') }}" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition duration-150">Noticias</a>
+                    {% if current_user %}
+                        <a href="{{ url_for('payment_info') }}" class="bg-yellow-400 text-indigo-900 hover:bg-yellow-500 px-3 py-2 rounded-md text-sm font-bold transition duration-150 shadow-lg">Pagar Asistencia</a>
+                        <a href="{{ url_for('logout') }}" class="text-white hover:bg-red-500 px-3 py-2 rounded-md text-sm font-medium transition duration-150">Cerrar Sesión</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition duration-150">Iniciar Sesión</a>
+                        <a href="{{ url_for('register') }}" class="text-indigo-600 bg-white hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium transition duration-150 shadow-md">Registrarse</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+        <div class="bg-white shadow-xl rounded-xl p-8 md:p-10">
+            <!-- Manejo de Mensajes Flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-6">
+                        {% for category, message in messages %}
+                            <div class="p-3 mb-2 rounded-lg text-sm {% if category == 'success' %}bg-green-100 text-green-800{% elif category == 'error' %}bg-red-100 text-red-800{% elif category == 'info' %}bg-blue-100 text-blue-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-6">{{ title }}</h1>
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 mt-auto">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
+            Iglesia de Cristo
+        </div>
+    </footer>
+</body>
+</html>

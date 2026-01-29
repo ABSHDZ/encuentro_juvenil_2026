@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Registro de Asistencia{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto text-center p-8 rounded-xl shadow-2xl 
+    {% if status == 'success' %} bg-green-100 border-green-500 
+    {% elif status == 'already_registered' %} bg-yellow-100 border-yellow-500
+    {% elif status == 'unauthorized' %} bg-red-100 border-red-500 
+    {% else %} bg-gray-100 border-gray-500 
+    {% endif %} border-4">
+    
+    <h1 class="text-4xl font-extrabold mb-4 
+        {% if status == 'success' %} text-green-700 
+        {% elif status == 'already_registered' %} text-yellow-700
+        {% elif status == 'unauthorized' %} text-red-700 
+        {% else %} text-gray-700 
+        {% endif %}">
+        {{ message }}
+    </h1>
+    
+    <p class="text-xl text-gray-800 mb-6">{{ detail }}</p>
+
+    {% if status == 'success' %}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-green-600 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+    {% elif status == 'unauthorized' %}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-red-600" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+        </svg>
+    {% endif %}
+    
+    <div class="mt-8">
+        <a href="{{ url_for('profile') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+            Volver a Perfil
+        </a>
+    </div>
+</div>
+{% endblock %}

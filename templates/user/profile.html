@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+    <p class="text-xl text-gray-700">ID de Usuario: <span class="font-mono bg-gray-100 p-1 rounded">{{ current_user.id }}</span></p>
+
+    <!-- Sección de Estado de Pago -->
+    <div class="p-6 rounded-lg shadow-inner {% if current_user.payment_status == payment_statuses.CONFIRMED %}bg-green-100 border-2 border-green-500{% elif current_user.payment_status == payment_statuses.PENDING %}bg-yellow-100 border-2 border-yellow-500{% else %}bg-red-100 border-2 border-red-500{% endif %}">
+        <h2 class="text-xl font-bold {% if current_user.payment_status == payment_statuses.CONFIRMED %}text-green-800{% elif current_user.payment_status == payment_statuses.PENDING %}text-yellow-800{% else %}text-red-800{% endif %} mb-2">
+            Estado de Pago:
+        </h2>
+        <p class="text-3xl font-extrabold {% if current_user.payment_status == payment_statuses.CONFIRMED %}text-green-700{% elif current_user.payment_status == payment_statuses.PENDING %}text-yellow-700{% else %}text-red-700{% endif %}">
+            {{ current_user.payment_status }}
+        </p>
+        {% if current_user.payment_status == payment_statuses.CONFIRMED %}
+            <p class="mt-2 text-sm text-green-700">¡Felicidades! Tienes acceso. <a href="{{ url_for('my_qr_code') }}" class="font-bold underline hover:text-green-900">Ver QR aquí</a>.</p>
+        {% elif current_user.payment_status == payment_statuses.PENDING %}
+            <p class="mt-2 text-sm text-yellow-700">Estamos revisando tu comprobante. Pronto actualizaremos tu estado.</p>
+        {% else %}
+            <p class="mt-2 text-sm text-red-700">Necesitas realizar y registrar tu pago para recibir tu código QR. <a href="{{ url_for('payment_info') }}" class="font-bold underline hover:text-red-900">Ir a Pagar</a>.</p>
+        {% endif %}
+    </div>
+    <!-- Fin Sección de Estado de Pago -->
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 p-6 border border-indigo-200 rounded-lg bg-indigo-50">
+        <h2 class="col-span-full text-2xl font-bold text-indigo-700 mb-4 border-b pb-2">Información del Perfil</h2>
+
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Email</p>
+            <p class="mt-1 text-lg font-semibold text-gray-900">{{ current_user.email }}</p>
+        </div>
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Nombre</p>
+            <p class="mt-1 text-lg font-semibold text-gray-900">{{ current_user.name }}</p>
+        </div>
+
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Edad</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.age }} años</p>
+        </div>
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Teléfono</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.phone }}</p>
+        </div>
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Procedencia</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.city }}</p>
+        </div>
+
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">¿Necesitas Hospedaje?</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.needs_lodging }}</p>
+        </div>
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">¿Cómo Planeas Llegar?</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.transport }}</p>
+        </div>
+
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Lugar Donde Te Reunes</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.local_name }}</p>
+        </div>
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">¿Miembro o Visitante?</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.membership }}</p>
+        </div>
+
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Situación</p>
+            <p class="mt-1 text-lg text-gray-900">{{ current_user.situation }}</p>
+        </div>
+        <div class="col-span-1">
+            <p class="text-sm font-medium text-gray-500">Grupo Actual</p>
+            <p class="mt-1 text-lg font-bold text-indigo-600">
+                {% if current_user.group_id %}
+                    {{ current_user.group.code }}
+                {% else %}
+                    Sin Grupo
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-8 flex justify-end">
+        <a href="{{ url_for('edit_profile') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+            Editar Perfil
+        </a>
+    </div>
+    <div class="mt-8 flex justify-end">
+        <a href="{{ url_for('group_management') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+            Gestión de Grupos
+        </a>
+    </div>
+</div>
+{% endblock %}

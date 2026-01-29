@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Columna 1 -->
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email (Único)</label>
+            <input id="email" name="email" type="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Nombre Completo</label>
+            <input id="name" name="name" type="text" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Crear Contraseña</label>
+            <input id="password" name="password" type="password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
+            <input id="confirm_password" name="confirm_password" type="password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="age" class="block text-sm font-medium text-gray-700">Edad (Solo números)</label>
+            <input id="age" name="age" type="number" required min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono (Solo números)</label>
+            <input id="phone" name="phone" type="number" required min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="city" class="block text-sm font-medium text-gray-700">Procedencia</label>
+            <select id="city" name="city" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in procedencia %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="needs_lodging" class="block text-sm font-medium text-gray-700">¿Necesitas Hospedaje?</label>
+            <select id="needs_lodging" name="needs_lodging" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in hospedaje %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="transport" class="block text-sm font-medium text-gray-700">¿Cómo planeas llegar?</label>
+            <select id="transport" name="transport" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in transporte %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="local_name" class="block text-sm font-medium text-gray-700">Lugar Donde Te Reunes</label>
+            <input id="local_name" name="local_name" type="text" required placeholder="Iglesia de Cristo en Santa Mónica" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="membership" class="block text-sm font-medium text-gray-700">¿Miembro o Visitante?</label>
+            <select id="membership" name="membership" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in membresia %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="situation" class="block text-sm font-medium text-gray-700">Situación</label>
+            <select id="situation" name="situation" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                {% for option in situacion %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150">
+            Crear Cuenta
+        </button>
+    </div>
+</form>
+{% endblock %}

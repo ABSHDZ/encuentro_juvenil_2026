@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 pb-2">
+        Asistencia
+    </h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] col-span-1">
+            <div class="flex items-center space-x-4">
+                <div>
+                    <!-- <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Total de Usuarios Contados
+                    </p> -->
+                    <p class="text-5xl font-extrabold text-gray-900 mt-1">
+                        {{ total_users }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
